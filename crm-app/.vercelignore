@@ -1,0 +1,11 @@
+# Ne pas déployer le backend sur Vercel
+backend/
+
+# Dossiers node_modules
+node_modules/
+*/node_modules/
+
+# Fichiers de développement
+.git/
+.env
+*.log
