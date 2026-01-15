@@ -1,0 +1,184 @@
+{
+  "clients": [
+    {
+      "id": "1",
+      "nomComplet": "Jean Tremblay",
+      "entreprise": "",
+      "contactPrincipal": "514-555-0101",
+      "email": "jean.tremblay@email.com",
+      "canalEntree": "Téléphone",
+      "languePreferee": "Français",
+      "typeClient": "Particulier",
+      "objectifClient": "Réduire les coûts",
+      "servicesSouhaites": ["Mobilité", "Internet"],
+      "ancienFournisseur": "Bell",
+      "eligibleEPP": "Non",
+      "mobilite": {
+        "nombreLignes": 2,
+        "appareils": "iPhone 13, Samsung Galaxy S21",
+        "forfait": "20 GB",
+        "dateEcheance": "2026-03-15"
+      },
+      "residentiel": {
+        "adresse": "123 Rue Saint-Denis, Montréal, QC",
+        "vitesse": "100 Mbps",
+        "tv": "Oui",
+        "telephonie": "Non",
+        "installation": "À domicile"
+      },
+      "promotions": "Rabais de 10$ par mois pendant 12 mois",
+      "statut": "Prêt à signer",
+      "dates": {
+        "premierContact": "2026-01-05",
+        "dernierSuivi": "2026-01-12",
+        "prochainSuivi": "2026-01-18"
+      },
+      "commentaires": "Client très intéressé, attend confirmation de l'adresse pour installation",
+      "dateCreation": "2026-01-05T10:30:00.000Z"
+    },
+    {
+      "id": "2",
+      "nomComplet": "Marie Dubois",
+      "entreprise": "Café Dubois PME",
+      "contactPrincipal": "514-555-0202",
+      "email": "marie@cafedubois.ca",
+      "canalEntree": "Site web",
+      "languePreferee": "Français",
+      "typeClient": "PME",
+      "objectifClient": "Meilleur service",
+      "servicesSouhaites": ["Mobilité", "Internet", "Téléphonie"],
+      "ancienFournisseur": "Vidéotron",
+      "eligibleEPP": "Oui",
+      "mobilite": {
+        "nombreLignes": 5,
+        "appareils": "iPhone 14 Pro x3, Google Pixel 7 x2",
+        "forfait": "50 GB par ligne",
+        "dateEcheance": "2026-06-30"
+      },
+      "residentiel": {
+        "adresse": "456 Avenue du Mont-Royal, Montréal, QC",
+        "vitesse": "500 Mbps",
+        "tv": "Non",
+        "telephonie": "Oui",
+        "installation": "Commercial"
+      },
+      "promotions": "Forfait entreprise avec 15% de rabais",
+      "statut": "En réflexion",
+      "dates": {
+        "premierContact": "2026-01-08",
+        "dernierSuivi": "2026-01-14",
+        "prochainSuivi": "2026-01-20"
+      },
+      "commentaires": "Souhaite comparer avec d'autres fournisseurs avant de décider",
+      "dateCreation": "2026-01-08T14:20:00.000Z"
+    },
+    {
+      "id": "3",
+      "nomComplet": "Pierre Gagnon",
+      "entreprise": "",
+      "contactPrincipal": "438-555-0303",
+      "email": "p.gagnon@gmail.com",
+      "canalEntree": "Référence",
+      "languePreferee": "Français",
+      "typeClient": "Particulier",
+      "objectifClient": "Plus de données",
+      "servicesSouhaites": ["Mobilité"],
+      "ancienFournisseur": "Fido",
+      "eligibleEPP": "Non",
+      "mobilite": {
+        "nombreLignes": 1,
+        "appareils": "Samsung Galaxy S23",
+        "forfait": "40 GB",
+        "dateEcheance": "2026-02-28"
+      },
+      "residentiel": {
+        "adresse": "",
+        "vitesse": "",
+        "tv": "",
+        "telephonie": "",
+        "installation": ""
+      },
+      "promotions": "Forfait illimité Canada-USA",
+      "statut": "Finalisé",
+      "dates": {
+        "premierContact": "2026-01-02",
+        "dernierSuivi": "2026-01-10",
+        "prochainSuivi": ""
+      },
+      "commentaires": "Client satisfait, contrat signé le 10 janvier",
+      "dateCreation": "2026-01-02T09:15:00.000Z"
+    },
+    {
+      "id": "4",
+      "nomComplet": "Sophie Leblanc",
+      "entreprise": "",
+      "contactPrincipal": "450-555-0404",
+      "email": "sophie.leblanc@hotmail.com",
+      "canalEntree": "En magasin",
+      "languePreferee": "Français",
+      "typeClient": "Particulier",
+      "objectifClient": "Bundle complet",
+      "servicesSouhaites": ["Mobilité", "Internet", "TV"],
+      "ancienFournisseur": "Bell",
+      "eligibleEPP": "Non",
+      "mobilite": {
+        "nombreLignes": 3,
+        "appareils": "iPhone 15, iPhone 12, iPad Air",
+        "forfait": "30 GB par ligne",
+        "dateEcheance": "2026-04-20"
+      },
+      "residentiel": {
+        "adresse": "789 Boulevard des Sources, Laval, QC",
+        "vitesse": "300 Mbps",
+        "tv": "Oui - Package Premium",
+        "telephonie": "Oui",
+        "installation": "À domicile"
+      },
+      "promotions": "Bundle famille - 25% de rabais sur TV",
+      "statut": "Prospect",
+      "dates": {
+        "premierContact": "2026-01-13",
+        "dernierSuivi": "2026-01-13",
+        "prochainSuivi": "2026-01-16"
+      },
+      "commentaires": "Nouvelle cliente, demande une soumission détaillée",
+      "dateCreation": "2026-01-13T16:45:00.000Z"
+    },
+    {
+      "id": "5",
+      "nomComplet": "Ahmed El-Khoury",
+      "entreprise": "Tech Solutions Inc.",
+      "contactPrincipal": "514-555-0505",
+      "email": "ahmed@techsolutions.ca",
+      "canalEntree": "LinkedIn",
+      "languePreferee": "Anglais",
+      "typeClient": "PME",
+      "objectifClient": "Expansion",
+      "servicesSouhaites": ["Mobilité", "Internet"],
+      "ancienFournisseur": "Rogers",
+      "eligibleEPP": "Oui",
+      "mobilite": {
+        "nombreLignes": 12,
+        "appareils": "iPhone 14 Pro, divers modèles Android",
+        "forfait": "Illimité",
+        "dateEcheance": "2026-08-15"
+      },
+      "residentiel": {
+        "adresse": "1000 Rue University, Montréal, QC",
+        "vitesse": "1 Gbps",
+        "tv": "Non",
+        "telephonie": "Oui - Système VoIP",
+        "installation": "Bureau"
+      },
+      "promotions": "Plan corporatif avec support prioritaire",
+      "statut": "Refusé",
+      "dates": {
+        "premierContact": "2025-12-20",
+        "dernierSuivi": "2026-01-11",
+        "prochainSuivi": ""
+      },
+      "commentaires": "A choisi de rester avec son fournisseur actuel pour l'instant",
+      "dateCreation": "2025-12-20T11:00:00.000Z"
+    }
+  ]
+}
