@@ -9,8 +9,8 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #f3f4f6;
-  color: #1f2937;
+  background: #0f0f0f;
+  color: #e5e7eb;
   min-height: 100vh;
 }
 
@@ -21,5 +21,5 @@ code {
 /* Typography */
 h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
-  color: #1f2937;
+  color: #f3f4f6;
 }

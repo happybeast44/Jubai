@@ -4,10 +4,12 @@ import ClientList from './components/ClientList';
 import ClientForm from './components/ClientForm';
 import ClientDetail from './components/ClientDetail';
 import StatsPanel from './components/StatsPanel';
+import Login from './components/Login';
 
 const API_URL = 'http://localhost:5000/api/clients';
 
 function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [clients, setClients] = useState([]);
   const [filteredClients, setFilteredClients] = useState([]);
   const [selectedClient, setSelectedClient] = useState(null);
@@ -17,6 +19,10 @@ function App() {
   const [filterStatut, setFilterStatut] = useState('');
   const [filterType, setFilterType] = useState('');
   const [loading, setLoading] = useState(true);
+
+  const handleLogin = () => {
+    setIsAuthenticated(true);
+  };
 
   // Charger tous les clients au démarrage
   useEffect(() => {
@@ -153,11 +159,15 @@ function App() {
     setSelectedClient(null);
   };
 
+  // Afficher la page de connexion si non authentifié
+  if (!isAuthenticated) {
+    return <Login onLogin={handleLogin} />;
+  }
+
   return (
     <div className="App">
       <header className="App-header">
-        <h1>CRM Professionnel</h1>
-        <p>Gestion de vos clients</p>
+        <h1>CRM</h1>
       </header>
 
       <main className="App-main">

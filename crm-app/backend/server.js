@@ -36,6 +36,20 @@ const writeDatabase = (data) => {
   }
 };
 
+// Mot de passe stocké côté serveur (en production, utiliser une vraie base de données avec hash)
+const CORRECT_PASSWORD = 'Bestbuy1';
+
+// Route POST - Authentification
+app.post('/api/login', (req, res) => {
+  const { password } = req.body;
+
+  if (password === CORRECT_PASSWORD) {
+    res.json({ success: true, message: 'Authentification réussie' });
+  } else {
+    res.status(401).json({ success: false, message: 'Mot de passe incorrect' });
+  }
+});
+
 // Route GET - Obtenir tous les clients
 app.get('/api/clients', (req, res) => {
   const db = readDatabase();

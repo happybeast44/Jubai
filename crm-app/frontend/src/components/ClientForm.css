@@ -5,7 +5,7 @@
 .form-section {
   margin-bottom: 32px;
   padding-bottom: 24px;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid #2a2a2a;
 }
 
 .form-section:last-of-type {
@@ -14,7 +14,7 @@
 }
 
 .form-section h3 {
-  color: #1f2937;
+  color: #f3f4f6;
   margin-bottom: 20px;
   font-size: 1.125rem;
   font-weight: 600;
@@ -35,7 +35,7 @@
 
 .form-group label {
   font-weight: 600;
-  color: #374151;
+  color: #d1d5db;
   margin-bottom: 8px;
   font-size: 0.875rem;
 }
@@ -44,13 +44,13 @@
 .form-group select,
 .form-group textarea {
   padding: 10px 14px;
-  border: 1px solid #d1d5db;
+  border: 1px solid #2a2a2a;
   border-radius: 6px;
   font-size: 0.875rem;
   font-family: inherit;
   transition: all 0.2s ease;
-  background: white;
-  color: #1f2937;
+  background: #121212;
+  color: #e5e7eb;
 }
 
 .form-group input:focus,
@@ -58,17 +58,23 @@
 .form-group textarea:focus {
   outline: none;
   border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+  background: #0f0f0f;
 }
 
 .form-group input::placeholder,
 .form-group textarea::placeholder {
-  color: #9ca3af;
+  color: #6b7280;
 }
 
 .form-group textarea {
   resize: vertical;
   line-height: 1.5;
+}
+
+.form-group select option {
+  background: #1e1e1e;
+  color: #e5e7eb;
 }
 
 .checkbox-group {
@@ -85,16 +91,17 @@
   font-weight: 500;
   cursor: pointer;
   padding: 8px 14px;
-  border: 1px solid #d1d5db;
+  border: 1px solid #2a2a2a;
   border-radius: 6px;
   transition: all 0.2s ease;
   font-size: 0.875rem;
-  background: white;
+  background: #121212;
+  color: #d1d5db;
 }
 
 .checkbox-group label:hover {
   border-color: #3b82f6;
-  background: #eff6ff;
+  background: #1a2332;
 }
 
 .checkbox-group input[type="checkbox"] {
@@ -110,11 +117,11 @@
   gap: 12px;
   justify-content: flex-end;
   padding: 20px 28px;
-  background: #f9fafb;
+  background: #171717;
   border-radius: 0 0 8px 8px;
   position: sticky;
   bottom: 0;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid #2a2a2a;
 }
 
 .form-actions .btn {
