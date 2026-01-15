@@ -13,14 +13,15 @@
 
 ---
 
-### 🌐 **Accès DISTANT (depuis n'importe où)**
+### 🌐 **Accès DISTANT (depuis n'importe où) - RECOMMANDÉ**
 - ✅ Accès depuis **travail, maison, déplacement**
 - ✅ Fonctionne sur **n'importe quel réseau internet**
+- ✅ **Une seule URL** pour tout (frontend + backend)
 - ✅ Sécurisé (HTTPS + mot de passe)
 - ⚠️ Nécessite installation de **Ngrok** (une seule fois)
 - ⚠️ URL change à chaque lancement (version gratuite)
 
-👉 **Utilisez :** `LANCER_CRM_NGROK.bat`
+👉 **Utilisez :** `LANCER_CRM_NGROK_PRODUCTION.bat`
 👉 **Guide complet :** `GUIDE_NGROK_ACCES_DISTANT.md`
 
 ---
@@ -30,7 +31,8 @@
 | Fichier | Description |
 |---------|-------------|
 | **LANCER_CRM.bat** | Lance le CRM pour accès local (même Wi-Fi) |
-| **LANCER_CRM_NGROK.bat** | Lance le CRM avec accès distant (n'importe où) |
+| **LANCER_CRM_NGROK_PRODUCTION.bat** | Lance le CRM avec accès distant - **RECOMMANDÉ** |
+| **INSTALLER_DEPENDANCES.bat** | Installe les dépendances Node.js (à faire une seule fois) |
 | **VOIR_MON_IP.bat** | Affiche l'adresse IP de votre PC (pour accès local) |
 | **GUIDE_UTILISATION_LOCALE.md** | Guide complet : accès local Wi-Fi |
 | **GUIDE_NGROK_ACCES_DISTANT.md** | Guide complet : accès distant avec Ngrok |
@@ -41,57 +43,99 @@
 
 **Vous utilisez votre tablette au travail et votre PC à la maison ?**
 
-👉 **Utilisez la méthode NGROK (accès distant)**
+👉 **Utilisez `LANCER_CRM_NGROK_PRODUCTION.bat` (accès distant)**
 
 Pourquoi ?
-- Vous pourrez accéder au CRM depuis votre tablette au travail
-- Vous pourrez accéder depuis votre PC à la maison
-- Vous pourrez accéder depuis n'importe où avec internet
-- Vous n'avez besoin que de l'URL Ngrok
+- **Une seule URL** pour accéder au CRM complet
+- Fonctionne depuis votre tablette au travail
+- Fonctionne depuis votre PC à la maison
+- Fonctionne depuis n'importe où avec internet
+- Plus simple et plus fiable
 
 **Étapes simples :**
-1. Installer Ngrok (une seule fois) - voir `GUIDE_NGROK_ACCES_DISTANT.md`
-2. Lancer `LANCER_CRM_NGROK.bat` sur votre PC
-3. Noter l'URL Ngrok affichée
-4. Ouvrir cette URL sur votre tablette au travail
-5. Profiter de votre CRM !
+1. Installer Ngrok (une seule fois) - voir ci-dessous
+2. Lancer `LANCER_CRM_NGROK_PRODUCTION.bat`
+3. Attendre 1-2 minutes (build du frontend)
+4. Noter l'URL Ngrok affichée (ex: `https://abc123.ngrok-free.dev`)
+5. Ouvrir cette URL sur n'importe quel appareil
+6. Profiter de votre CRM !
 
 ---
 
 ## ⚙️ Configuration initiale (première utilisation)
 
-### Pour accès LOCAL :
-✅ Aucune configuration nécessaire - lancez directement `LANCER_CRM.bat`
+### **Étape 1 : Installer les dépendances Node.js**
 
-### Pour accès DISTANT (Ngrok) :
-1. Télécharger Ngrok : https://ngrok.com/download
-2. Extraire `ngrok.exe` dans `C:\ngrok\`
-3. Créer un compte gratuit : https://dashboard.ngrok.com/signup
-4. Copier votre token d'authentification
-5. Configurer : `ngrok config add-authtoken VOTRE_TOKEN`
-6. Lancer `LANCER_CRM_NGROK.bat`
+**Obligatoire - À faire une seule fois**
 
-Voir `GUIDE_NGROK_ACCES_DISTANT.md` pour les détails.
+1. Double-cliquez sur `INSTALLER_DEPENDANCES.bat`
+2. Attendez 2-5 minutes que tout s'installe
+3. C'est fait !
+
+### **Étape 2 : Pour accès DISTANT - Installer Ngrok**
+
+**Si vous voulez accéder depuis le travail, en déplacement, etc.**
+
+1. Téléchargez Ngrok : **https://ngrok.com/download**
+2. Extrayez le fichier ZIP
+3. Copiez `ngrok.exe` dans `C:\ngrok\` (créez le dossier s'il n'existe pas)
+4. Créez un compte gratuit : **https://dashboard.ngrok.com/signup**
+5. Copiez votre token sur : **https://dashboard.ngrok.com/get-started/your-authtoken**
+6. Ouvrez PowerShell et tapez :
+   ```
+   cd C:\ngrok
+   .\ngrok config add-authtoken VOTRE_TOKEN
+   ```
+7. C'est fait !
+
+---
+
+## 🚀 Lancement quotidien
+
+### **Pour accès DISTANT (recommandé) :**
+
+1. Double-cliquez sur `LANCER_CRM_NGROK_PRODUCTION.bat`
+2. Attendez 1-2 minutes (build + démarrage)
+3. Notez l'URL Ngrok affichée dans la fenêtre Ngrok
+4. Ouvrez cette URL sur n'importe quel appareil
+5. Cliquez "Visit Site" si Ngrok affiche un avertissement
+6. Entrez le mot de passe : `Bestbuy1`
+
+### **Pour accès LOCAL uniquement :**
+
+1. Double-cliquez sur `LANCER_CRM.bat`
+2. Le navigateur s'ouvre sur `http://localhost:3000`
+3. Entrez le mot de passe : `Bestbuy1`
 
 ---
 
 ## 🆘 Aide rapide
 
 ### Le CRM ne démarre pas ?
+- Avez-vous installé les dépendances ? → Lancez `INSTALLER_DEPENDANCES.bat`
 - Vérifiez que Node.js est installé
-- Vérifiez que vous êtes dans le bon dossier
 - Fermez toutes les fenêtres et réessayez
 
-### Impossible d'accéder depuis l'iPad (local) ?
-- PC et iPad sur le **même Wi-Fi** ?
-- Pare-feu Windows autorise Node.js ?
-- IP correcte ? Utilisez `VOIR_MON_IP.bat`
+### "Cannot find module 'express'" ou "react-scripts not found" ?
+- Vous n'avez pas installé les dépendances
+- Lancez `INSTALLER_DEPENDANCES.bat`
 
 ### Impossible d'accéder depuis la tablette (Ngrok) ?
-- CRM lancé avec `LANCER_CRM_NGROK.bat` ?
-- Les 3 fenêtres sont ouvertes ?
+- CRM lancé avec `LANCER_CRM_NGROK_PRODUCTION.bat` ?
+- Les 2 fenêtres sont ouvertes (Backend + Ngrok) ?
 - URL Ngrok correcte ?
 - Cliquez "Visit Site" si Ngrok affiche un avertissement
+
+### L'URL Ngrok change à chaque fois ?
+- C'est normal avec la version gratuite de Ngrok
+- Notez la nouvelle URL à chaque lancement
+- Ou gardez le CRM allumé toute la journée (l'URL reste la même)
+- Ou passez à la version payante Ngrok (8$/mois) pour une URL fixe
+
+### Le PC doit rester allumé ?
+- **OUI** - Le PC héberge votre CRM
+- Si vous éteignez le PC, l'URL Ngrok ne fonctionne plus
+- Configurez Windows pour qu'il ne se mette pas en veille
 
 ---
 
@@ -105,4 +149,7 @@ Utilisez ce mot de passe pour vous connecter au CRM, que vous utilisiez l'accès
 
 ## ✅ Prêt à démarrer !
 
-Choisissez votre méthode et suivez le guide correspondant. Bonne utilisation !
+1. Installez les dépendances : `INSTALLER_DEPENDANCES.bat`
+2. Si accès distant : Installez Ngrok (voir ci-dessus)
+3. Lancez `LANCER_CRM_NGROK_PRODUCTION.bat`
+4. Profitez de votre CRM ! 🎉

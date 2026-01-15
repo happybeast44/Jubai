@@ -22,6 +22,15 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
+// Servir les fichiers statiques du frontend en production
+const frontendPath = path.join(__dirname, '../frontend/build');
+if (fs.existsSync(frontendPath)) {
+  app.use(express.static(frontendPath));
+  console.log('✅ Frontend build détecté, serveur en mode production');
+} else {
+  console.log('⚠️  Pas de build frontend détecté, API uniquement');
+}
+
 // Chemin vers le fichier de base de données JSON
 const DB_PATH = path.join(__dirname, 'database.json');
 
@@ -137,6 +146,13 @@ app.delete('/api/clients/:id', (req, res) => {
     res.status(404).json({ message: 'Client non trouvé' });
   }
 });
+
+// Route catch-all pour servir le frontend React (doit être en dernier)
+if (fs.existsSync(frontendPath)) {
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(frontendPath, 'index.html'));
+  });
+}
 
 // Démarrer le serveur
 app.listen(PORT, () => {
