@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM Best Buy Express</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .modal {
+            display: none;
+        }
+        .modal.active {
+            display: flex;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Header -->
+    <header class="bg-blue-600 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-6">
+            <h1 class="text-3xl font-bold">CRM Best Buy Express</h1>
+            <p class="text-blue-100">Gestion de la relation client</p>
+        </div>
+    </header>
+
+    <div class="container mx-auto px-4 py-8">
+        <!-- Statistiques & Actions -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+            <div class="bg-white rounded-lg shadow p-6">
+                <h3 class="text-gray-500 text-sm font-semibold">Total Clients</h3>
+                <p class="text-3xl font-bold text-blue-600" id="stat-total">{{ clients|length }}</p>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <h3 class="text-gray-500 text-sm font-semibold">Rappels Aujourd'hui</h3>
+                <p class="text-3xl font-bold text-orange-600" id="stat-rappels">0</p>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <h3 class="text-gray-500 text-sm font-semibold">Total Lignes</h3>
+                <p class="text-3xl font-bold text-green-600" id="stat-lignes">0</p>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <h3 class="text-gray-500 text-sm font-semibold">Éligibles EPP</h3>
+                <p class="text-3xl font-bold text-purple-600" id="stat-epp">0</p>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="bg-white rounded-lg shadow p-6 mb-8">
+            <div class="flex flex-wrap gap-4 items-center justify-between">
+                <div class="flex gap-2">
+                    <button onclick="openAddModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition">
+                        + Ajouter Client
+                    </button>
+                    <button onclick="viewRappels()" class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-lg font-semibold transition">
+                        Rappels du Jour
+                    </button>
+                    <button onclick="exportJSON()" class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg font-semibold transition">
+                        Exporter JSON
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filtres et Recherche -->
+        <div class="bg-white rounded-lg shadow p-6 mb-8">
+            <form method="GET" action="/" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Recherche</label>
+                    <input type="text" name="search" value="{{ search_query }}"
+                           placeholder="Nom, téléphone, courriel..."
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Statut</label>
+                    <select name="statut" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <option value="">Tous</option>
+                        {% for statut in statuts %}
+                        <option value="{{ statut }}" {% if current_statut == statut %}selected{% endif %}>{{ statut }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Type de Vente</label>
+                    <select name="typeVente" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <option value="">Tous</option>
+                        {% for type_vente in types_vente %}
+                        <option value="{{ type_vente }}" {% if current_type_vente == type_vente %}selected{% endif %}>{{ type_vente }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="flex items-end gap-2">
+                    <button type="submit" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition">
+                        Filtrer
+                    </button>
+                    <a href="/" class="bg-gray-300 hover:bg-gray-400 text-gray-700 px-4 py-2 rounded-lg font-semibold transition">
+                        Reset
+                    </a>
+                </div>
+            </form>
+        </div>
+
+        <!-- Tableau des Clients -->
+        <div class="bg-white rounded-lg shadow overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nom</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Téléphone</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Courriel</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Statut</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type Vente</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Lignes</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Prochain Suivi</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        {% for client in clients %}
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="font-medium text-gray-900">{{ client.nom }}</div>
+                                <div class="text-sm text-gray-500">{{ client.typeClient or 'N/A' }}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ client.telephone }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ client.courriel or 'N/A' }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
+                                    {% if client.statut == 'Prospect' %}bg-yellow-100 text-yellow-800
+                                    {% elif client.statut == 'Client actif' %}bg-green-100 text-green-800
+                                    {% elif client.statut == 'Suivi' %}bg-blue-100 text-blue-800
+                                    {% elif client.statut == 'Perdu' %}bg-red-100 text-red-800
+                                    {% else %}bg-gray-100 text-gray-800{% endif %}">
+                                    {{ client.statut }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ client.typeVente or 'N/A' }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ client.nombreLignes }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                {{ client.prochainSuivi.strftime('%Y-%m-%d') if client.prochainSuivi else 'N/A' }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
+                                <button onclick="viewClient({{ client.id }})" class="text-blue-600 hover:text-blue-900">Voir</button>
+                                <button onclick="editClient({{ client.id }})" class="text-green-600 hover:text-green-900">Modifier</button>
+                                <button onclick="deleteClient({{ client.id }})" class="text-red-600 hover:text-red-900">Supprimer</button>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="8" class="px-6 py-4 text-center text-gray-500">Aucun client trouvé</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Ajouter/Modifier Client -->
+    <div id="clientModal" class="modal fixed inset-0 bg-gray-600 bg-opacity-50 items-center justify-center z-50">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-screen overflow-y-auto m-4">
+            <div class="bg-blue-600 text-white px-6 py-4 flex justify-between items-center">
+                <h2 id="modalTitle" class="text-xl font-bold">Ajouter un Client</h2>
+                <button onclick="closeModal()" class="text-white hover:text-gray-200">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <form id="clientForm" class="p-6">
+                <input type="hidden" id="clientId" name="clientId">
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Informations de base -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Nom *</label>
+                        <input type="text" name="nom" required
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Téléphone *</label>
+                        <input type="tel" name="telephone" required
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Courriel</label>
+                        <input type="email" name="courriel"
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Type de Client</label>
+                        <select name="typeClient" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                            <option value="">Sélectionner...</option>
+                            <option value="Résidentiel">Résidentiel</option>
+                            <option value="Entreprise">Entreprise</option>
+                            <option value="PME">PME</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Canal d'Entrée</label>
+                        <select name="canalEntree" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                            <option value="">Sélectionner...</option>
+                            <option value="Téléphone">Téléphone</option>
+                            <option value="En personne">En personne</option>
+                            <option value="Référence">Référence</option>
+                            <option value="Site web">Site web</option>
+                            <option value="Réseaux sociaux">Réseaux sociaux</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Statut *</label>
+                        <select name="statut" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                            <option value="Prospect">Prospect</option>
+                            <option value="Client actif">Client actif</option>
+                            <option value="Suivi">Suivi</option>
+                            <option value="Perdu">Perdu</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Type de Vente</label>
+                        <select name="typeVente" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                            <option value="">Sélectionner...</option>
+                            <option value="Nouvelle ligne">Nouvelle ligne</option>
+                            <option value="Upgrade">Upgrade</option>
+                            <option value="Accessoires">Accessoires</option>
+                            <option value="Renouvellement">Renouvellement</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Nombre de Lignes</label>
+                        <input type="number" name="nombreLignes" min="0" value="0"
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Prochain Suivi</label>
+                        <input type="date" name="prochainSuivi"
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+
+                    <div class="flex items-center">
+                        <input type="checkbox" name="eligibleEPP" id="eligibleEPP" class="w-4 h-4 text-blue-600 border-gray-300 rounded">
+                        <label for="eligibleEPP" class="ml-2 block text-sm text-gray-900">Éligible EPP</label>
+                    </div>
+
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Services Voulus</label>
+                        <textarea name="servicesVoulus" rows="3"
+                                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"></textarea>
+                    </div>
+
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Notes</label>
+                        <textarea name="notes" rows="4"
+                                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"></textarea>
+                    </div>
+                </div>
+
+                <div class="mt-6 flex justify-end gap-4">
+                    <button type="button" onclick="closeModal()"
+                            class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition">
+                        Annuler
+                    </button>
+                    <button type="submit"
+                            class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                        Enregistrer
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Détails Client -->
+    <div id="viewModal" class="modal fixed inset-0 bg-gray-600 bg-opacity-50 items-center justify-center z-50">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-screen overflow-y-auto m-4">
+            <div class="bg-blue-600 text-white px-6 py-4 flex justify-between items-center">
+                <h2 class="text-xl font-bold">Détails du Client</h2>
+                <button onclick="closeViewModal()" class="text-white hover:text-gray-200">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <div id="viewContent" class="p-6">
+                <!-- Content loaded dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let isEditMode = false;
+
+        // Load statistics on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            loadStatistics();
+            loadRappelsCount();
+        });
+
+        function loadStatistics() {
+            fetch('/statistiques')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('stat-total').textContent = data.total_clients;
+                    document.getElementById('stat-lignes').textContent = data.total_lignes;
+                    document.getElementById('stat-epp').textContent = data.eligible_epp;
+                });
+        }
+
+        function loadRappelsCount() {
+            fetch('/rappels')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('stat-rappels').textContent = data.count;
+                });
+        }
+
+        function openAddModal() {
+            isEditMode = false;
+            document.getElementById('modalTitle').textContent = 'Ajouter un Client';
+            document.getElementById('clientForm').reset();
+            document.getElementById('clientId').value = '';
+            document.getElementById('clientModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('clientModal').classList.remove('active');
+        }
+
+        function closeViewModal() {
+            document.getElementById('viewModal').classList.remove('active');
+        }
+
+        function viewClient(clientId) {
+            fetch(`/client/${clientId}`)
+                .then(response => response.json())
+                .then(client => {
+                    const content = `
+                        <div class="space-y-4">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div><span class="font-semibold">Nom:</span> ${client.nom}</div>
+                                <div><span class="font-semibold">Téléphone:</span> ${client.telephone}</div>
+                                <div><span class="font-semibold">Courriel:</span> ${client.courriel || 'N/A'}</div>
+                                <div><span class="font-semibold">Type Client:</span> ${client.typeClient || 'N/A'}</div>
+                                <div><span class="font-semibold">Canal d'Entrée:</span> ${client.canalEntree || 'N/A'}</div>
+                                <div><span class="font-semibold">Statut:</span> ${client.statut}</div>
+                                <div><span class="font-semibold">Type de Vente:</span> ${client.typeVente || 'N/A'}</div>
+                                <div><span class="font-semibold">Nombre de Lignes:</span> ${client.nombreLignes}</div>
+                                <div><span class="font-semibold">Éligible EPP:</span> ${client.eligibleEPP ? 'Oui' : 'Non'}</div>
+                                <div><span class="font-semibold">Prochain Suivi:</span> ${client.prochainSuivi || 'N/A'}</div>
+                            </div>
+                            <div><span class="font-semibold">Services Voulus:</span><br>${client.servicesVoulus || 'N/A'}</div>
+                            <div><span class="font-semibold">Notes:</span><br>${client.notes || 'N/A'}</div>
+                        </div>
+                    `;
+                    document.getElementById('viewContent').innerHTML = content;
+                    document.getElementById('viewModal').classList.add('active');
+                });
+        }
+
+        function editClient(clientId) {
+            isEditMode = true;
+            document.getElementById('modalTitle').textContent = 'Modifier le Client';
+            document.getElementById('clientId').value = clientId;
+
+            fetch(`/client/${clientId}`)
+                .then(response => response.json())
+                .then(client => {
+                    const form = document.getElementById('clientForm');
+                    form.nom.value = client.nom;
+                    form.telephone.value = client.telephone;
+                    form.courriel.value = client.courriel || '';
+                    form.typeClient.value = client.typeClient || '';
+                    form.canalEntree.value = client.canalEntree || '';
+                    form.statut.value = client.statut;
+                    form.typeVente.value = client.typeVente || '';
+                    form.servicesVoulus.value = client.servicesVoulus || '';
+                    form.nombreLignes.value = client.nombreLignes;
+                    form.eligibleEPP.checked = client.eligibleEPP;
+                    form.prochainSuivi.value = client.prochainSuivi || '';
+                    form.notes.value = client.notes || '';
+
+                    document.getElementById('clientModal').classList.add('active');
+                });
+        }
+
+        function deleteClient(clientId) {
+            if (!confirm('Êtes-vous sûr de vouloir supprimer ce client ?')) {
+                return;
+            }
+
+            fetch(`/client/${clientId}/delete`, {
+                method: 'POST'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    location.reload();
+                } else {
+                    alert('Erreur: ' + data.message);
+                }
+            });
+        }
+
+        function viewRappels() {
+            fetch('/rappels')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.count === 0) {
+                        alert('Aucun rappel pour aujourd\'hui!');
+                        return;
+                    }
+
+                    let content = `<h3 class="font-bold mb-4">Rappels du ${data.date}</h3><ul class="space-y-2">`;
+                    data.clients.forEach(client => {
+                        content += `<li class="border-b pb-2">
+                            <strong>${client.nom}</strong> - ${client.telephone}<br>
+                            <span class="text-sm text-gray-600">Statut: ${client.statut} | ${client.notes || 'Pas de notes'}</span>
+                        </li>`;
+                    });
+                    content += '</ul>';
+
+                    document.getElementById('viewContent').innerHTML = content;
+                    document.getElementById('viewModal').classList.add('active');
+                });
+        }
+
+        function exportJSON() {
+            fetch('/export')
+                .then(response => response.json())
+                .then(data => {
+                    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `crm-export-${data.export_date}.json`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                    alert('Export JSON téléchargé avec succès!');
+                });
+        }
+
+        // Form submission
+        document.getElementById('clientForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const clientId = document.getElementById('clientId').value;
+            const url = clientId ? `/client/${clientId}/update` : '/client/add';
+
+            fetch(url, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    location.reload();
+                } else {
+                    alert('Erreur: ' + data.message);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
