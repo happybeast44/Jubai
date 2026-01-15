@@ -6,7 +6,7 @@ import ClientDetail from './components/ClientDetail';
 import StatsPanel from './components/StatsPanel';
 import Login from './components/Login';
 
-const API_URL = 'https://jubai-production.up.railway.app/api/clients';
+const API_URL = 'http://localhost:5000/api/clients';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
