@@ -1,0 +1,142 @@
+.client-list {
+  background: #1e1e1e;
+  padding: 24px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  border: 1px solid #2a2a2a;
+}
+
+.client-count {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #9ca3af;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #2a2a2a;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.clients-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 20px;
+}
+
+.client-card {
+  border: 1px solid #2a2a2a;
+  border-radius: 8px;
+  padding: 20px;
+  transition: all 0.2s ease;
+  background: #171717;
+}
+
+.client-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  border-color: #3b82f6;
+  background: #1a1a1a;
+}
+
+.client-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+  gap: 12px;
+}
+
+.client-name {
+  margin: 0;
+  font-size: 1.125rem;
+  color: #f3f4f6;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  flex: 1;
+  font-weight: 600;
+}
+
+.client-name:hover {
+  color: #3b82f6;
+}
+
+.client-statut {
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: white;
+  white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.client-card-body {
+  margin-bottom: 16px;
+}
+
+.client-info {
+  margin: 6px 0;
+  font-size: 0.875rem;
+  color: #9ca3af;
+  line-height: 1.6;
+}
+
+.client-info strong {
+  color: #d1d5db;
+  margin-right: 6px;
+  font-weight: 600;
+}
+
+.client-card-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding-top: 16px;
+  border-top: 1px solid #2a2a2a;
+}
+
+.client-card-actions .btn {
+  flex: 1;
+  min-width: 90px;
+  padding: 8px 12px;
+  font-size: 0.8125rem;
+}
+
+.no-clients {
+  text-align: center;
+  padding: 80px 20px;
+  color: #6b7280;
+  background: #1e1e1e;
+  border-radius: 8px;
+  border: 1px solid #2a2a2a;
+}
+
+.no-clients p:first-child {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #9ca3af;
+  margin-bottom: 8px;
+}
+
+.no-clients p:last-child {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+@media (max-width: 768px) {
+  .clients-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .client-list {
+    padding: 16px;
+  }
+
+  .client-card-actions {
+    flex-direction: column;
+  }
+
+  .client-card-actions .btn {
+    width: 100%;
+  }
+}
