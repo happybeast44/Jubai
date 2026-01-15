@@ -4,6 +4,41 @@ echo   Demarrage du CRM avec Ngrok
 echo ========================================
 echo.
 
+REM Verifier si les dependances sont installees
+if not exist "%~dp0backend\node_modules\" (
+    echo ATTENTION : Les dependances ne sont pas installees !
+    echo.
+    echo Voulez-vous les installer maintenant ?
+    echo Cela prendra 2-5 minutes.
+    echo.
+    choice /C ON /M "Tapez O pour installer, N pour annuler"
+    if errorlevel 2 (
+        echo Installation annulee.
+        pause
+        exit
+    )
+    echo.
+    echo Installation en cours...
+    call "%~dp0INSTALLER_DEPENDANCES.bat"
+    if %errorlevel% neq 0 (
+        echo L'installation a echoue. Impossible de lancer le CRM.
+        pause
+        exit
+    )
+)
+
+if not exist "%~dp0frontend\node_modules\" (
+    echo ATTENTION : Les dependances frontend ne sont pas installees !
+    echo.
+    echo Installation en cours...
+    call "%~dp0INSTALLER_DEPENDANCES.bat"
+    if %errorlevel% neq 0 (
+        echo L'installation a echoue. Impossible de lancer le CRM.
+        pause
+        exit
+    )
+)
+
 REM Verifier que Ngrok est installe
 if not exist "C:\ngrok\ngrok.exe" (
     echo ERREUR : Ngrok n'est pas installe !
@@ -12,6 +47,8 @@ if not exist "C:\ngrok\ngrok.exe" (
     echo 1. Telecharger : https://ngrok.com/download
     echo 2. Extraire ngrok.exe dans C:\ngrok\
     echo 3. Configurer le token : ngrok config add-authtoken VOTRE_TOKEN
+    echo.
+    echo Consultez GUIDE_NGROK_ACCES_DISTANT.md pour plus de details.
     echo.
     pause
     exit
