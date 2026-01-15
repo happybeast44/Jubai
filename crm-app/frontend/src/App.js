@@ -38,16 +38,7 @@ function App() {
     }
   }, []);
 
-  // Charger tous les clients au démarrage
-  useEffect(() => {
-    fetchClients();
-  }, [fetchClients]);
-
-  // Filtrer les clients quand les filtres changent
-  useEffect(() => {
-    filterClients();
-  }, [filterClients]);
-
+  // Fonction pour filtrer les clients
   const filterClients = useCallback(() => {
     let filtered = [...clients];
 
@@ -73,6 +64,16 @@ function App() {
 
     setFilteredClients(filtered);
   }, [clients, searchTerm, filterStatut, filterType]);
+
+  // Charger tous les clients au démarrage
+  useEffect(() => {
+    fetchClients();
+  }, [fetchClients]);
+
+  // Filtrer les clients quand les filtres changent
+  useEffect(() => {
+    filterClients();
+  }, [filterClients]);
 
   const handleAddClient = async (clientData) => {
     try {
