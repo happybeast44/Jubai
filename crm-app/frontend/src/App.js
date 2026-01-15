@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import './App.css';
 import ClientList from './components/ClientList';
 import ClientForm from './components/ClientForm';
@@ -24,17 +24,7 @@ function App() {
     setIsAuthenticated(true);
   };
 
-  // Charger tous les clients au démarrage
-  useEffect(() => {
-    fetchClients();
-  }, []);
-
-  // Filtrer les clients quand les filtres changent
-  useEffect(() => {
-    filterClients();
-  }, [clients, searchTerm, filterStatut, filterType]);
-
-  const fetchClients = async () => {
+  const fetchClients = useCallback(async () => {
     try {
       setLoading(true);
       const response = await fetch(API_URL);
@@ -46,9 +36,19 @@ function App() {
       setLoading(false);
       alert('Erreur lors du chargement des clients. Vérifiez que le serveur est démarré.');
     }
-  };
+  }, []);
 
-  const filterClients = () => {
+  // Charger tous les clients au démarrage
+  useEffect(() => {
+    fetchClients();
+  }, [fetchClients]);
+
+  // Filtrer les clients quand les filtres changent
+  useEffect(() => {
+    filterClients();
+  }, [filterClients]);
+
+  const filterClients = useCallback(() => {
     let filtered = [...clients];
 
     // Filtre de recherche
@@ -72,7 +72,7 @@ function App() {
     }
 
     setFilteredClients(filtered);
-  };
+  }, [clients, searchTerm, filterStatut, filterType]);
 
   const handleAddClient = async (clientData) => {
     try {
