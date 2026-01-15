@@ -91,8 +91,8 @@ function ClientForm({ client, onSave, onCancel }) {
     <div className="modal-overlay" onClick={onCancel}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
-          <h2>{client ? '✏️ Modifier le client' : '➕ Ajouter un nouveau client'}</h2>
-          <button className="close-btn" onClick={onCancel}>✖</button>
+          <h2>{client ? 'Modifier le client' : 'Ajouter un nouveau client'}</h2>
+          <button className="close-btn" onClick={onCancel}>&times;</button>
         </div>
 
         <form onSubmit={handleSubmit} className="client-form">

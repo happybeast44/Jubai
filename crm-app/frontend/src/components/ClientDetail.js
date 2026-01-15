@@ -8,8 +8,8 @@ function ClientDetail({ client, onClose, onEdit, onDelete }) {
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content detail-modal" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
-          <h2>👤 Détails du client</h2>
-          <button className="close-btn" onClick={onClose}>✖</button>
+          <h2>Détails du client</h2>
+          <button className="close-btn" onClick={onClose}>&times;</button>
         </div>
 
         <div className="detail-content">
@@ -197,10 +197,10 @@ function ClientDetail({ client, onClose, onEdit, onDelete }) {
             Fermer
           </button>
           <button className="btn btn-edit" onClick={() => onEdit(client)}>
-            ✏️ Modifier
+            Modifier
           </button>
           <button className="btn btn-danger" onClick={() => onDelete(client.id)}>
-            🗑️ Supprimer
+            Supprimer
           </button>
         </div>
       </div>

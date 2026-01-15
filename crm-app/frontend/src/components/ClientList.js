@@ -52,24 +52,24 @@ function ClientList({ clients, onClientClick, onEditClient, onDeleteClient }) {
             <div className="client-card-body">
               {client.entreprise && (
                 <p className="client-info">
-                  <strong>🏢 Entreprise:</strong> {client.entreprise}
+                  <strong>Entreprise:</strong> {client.entreprise}
                 </p>
               )}
               <p className="client-info">
-                <strong>👤 Type:</strong> {client.typeClient}
+                <strong>Type:</strong> {client.typeClient}
               </p>
               <p className="client-info">
-                <strong>📞 Contact:</strong> {client.contactPrincipal}
+                <strong>Contact:</strong> {client.contactPrincipal}
               </p>
               <p className="client-info">
-                <strong>📧 Email:</strong> {client.email}
+                <strong>Email:</strong> {client.email}
               </p>
               <p className="client-info">
-                <strong>🎯 Objectif:</strong> {client.objectifClient}
+                <strong>Objectif:</strong> {client.objectifClient}
               </p>
               {client.dates.prochainSuivi && (
                 <p className="client-info">
-                  <strong>📅 Prochain suivi:</strong> {new Date(client.dates.prochainSuivi).toLocaleDateString('fr-CA')}
+                  <strong>Prochain suivi:</strong> {new Date(client.dates.prochainSuivi).toLocaleDateString('fr-CA')}
                 </p>
               )}
             </div>
@@ -79,19 +79,19 @@ function ClientList({ clients, onClientClick, onEditClient, onDeleteClient }) {
                 className="btn btn-secondary"
                 onClick={() => onClientClick(client)}
               >
-                👁️ Voir détails
+                Voir détails
               </button>
               <button
                 className="btn btn-edit"
                 onClick={() => onEditClient(client)}
               >
-                ✏️ Modifier
+                Modifier
               </button>
               <button
                 className="btn btn-danger"
                 onClick={() => onDeleteClient(client.id)}
               >
-                🗑️ Supprimer
+                Supprimer
               </button>
             </div>
           </div>

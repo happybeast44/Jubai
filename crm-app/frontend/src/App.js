@@ -3,6 +3,7 @@ import './App.css';
 import ClientList from './components/ClientList';
 import ClientForm from './components/ClientForm';
 import ClientDetail from './components/ClientDetail';
+import StatsPanel from './components/StatsPanel';
 
 const API_URL = 'http://localhost:5000/api/clients';
 
@@ -155,21 +156,24 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>📋 CRM Simple</h1>
+        <h1>CRM Professionnel</h1>
         <p>Gestion de vos clients</p>
       </header>
 
       <main className="App-main">
+        {/* Statistiques */}
+        {!loading && <StatsPanel clients={clients} />}
+
         {/* Barre de contrôles */}
         <div className="controls">
           <button className="btn btn-primary" onClick={openAddForm}>
-            ➕ Ajouter un client
+            Ajouter un client
           </button>
 
           <div className="filters">
             <input
               type="text"
-              placeholder="🔍 Rechercher..."
+              placeholder="Rechercher..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="search-input"
